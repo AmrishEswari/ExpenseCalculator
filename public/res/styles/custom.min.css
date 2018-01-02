@@ -1,0 +1,14 @@
+.hide{
+    display:none;
+}
+
+.show{
+    display:block;
+}
+
+.textalign-left{
+    text-align:left !important;
+}
+.jumbotron {
+    padding: 5em inherit !important;
+}
