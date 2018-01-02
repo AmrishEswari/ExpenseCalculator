@@ -14,7 +14,8 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
 var mongoLabURL ='tranquil-lake-83247.herokuapp.com';
 var mongodbURL = 'localhost:3000';
 var serverEnvironment = false;
-var dbConnection ='';
+var dbConnection = '';
+var userInformation = {};
 $(document).ready(function () {
 
     if (serverEnvironment) {
@@ -23,6 +24,13 @@ $(document).ready(function () {
     else {
         dbConnection = mongodbURL;
     }
+
+    $('body').on('click', '#signin', function (e) {
+        e.preventDefault();
+        userInformation.username = $("#username").val();
+        userInformation.password = $("#password").val();
+        ValidateUsers(userInformation);
+    });
 
     $('body').on('click','#submit', function (e) {
         e.preventDefault();        
@@ -238,5 +246,18 @@ $(document).ready(function () {
         });
     }
 
+
+    function ValidateUsers(userInformation) {
+        $.ajax({
+            type: 'GET',
+            url: 'http://' + dbConnection + '/getUsers' + userInformation.password,
+            data: userInformation,
+            success: function (response) {
+                if (response.code === 200) {
+                    console.log(response);
+                }
+            }
+        })
+    }
 
 })
