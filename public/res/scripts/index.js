@@ -10,11 +10,22 @@ var individualexpenseDetails_test = {};
 var individualexpenseDetails_test_arr = [];
 var getMonthName = '';
 var monthNames = ["January", "February", "March", "April", "May", "June",
-                   "July", "August", "September", "October", "November", "December"];
+    "July", "August", "September", "October", "November", "December"];
+var mongoLabURL ='tranquil-lake-83247.herokuapp.com';
+var mongodbURL = 'localhost:3000';
+var serverEnvironment = false;
+var dbConnection ='';
 $(document).ready(function () {
 
+    if (serverEnvironment) {
+        dbConnection = mongoLabURL;
+    }
+    else {
+        dbConnection = mongodbURL;
+    }
+
     $('body').on('click','#submit', function (e) {
-        e.preventDefault();
+        e.preventDefault();        
         calculateTotalExpenses();        
         $("#totalexpenses").val(totalExpenses); 
         singleExpenses=calculateIndividualExpenses();   
@@ -23,7 +34,7 @@ $(document).ready(function () {
     $("body").on("click","#inserttodb" ,function (e) {
         e.preventDefault();
         saveRecordstoDatabase(expenseDetails);
-        //saveindividualExpensestoDatabase();
+        saveindividualExpensestoDatabase();
     });    
 
   
@@ -40,7 +51,7 @@ $(document).ready(function () {
                 if (e.currentTarget.id === "individualexphistory") {
                     if (!getMonthName) {
                         var currentMonth = new Date();
-                        getMonthName = monthNames[currentMonth.getMonth()]+ '-2017';
+                        getMonthName = monthNames[currentMonth.getMonth()] + '-' + currentMonth.getFullYear();
                     }
                     getIndividualExpenseDetails(getMonthName);                    
                 }                
@@ -58,7 +69,7 @@ $(document).ready(function () {
     function saveindividualExpensestoDatabase() {       
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:3000/insertindividualExpense',
+            url: 'http://'+ dbConnection +'/insertindividualExpense',
             data: individualexpenseDetails_test,
             success: function (response) {
                 if (response.code == 200) {
@@ -70,25 +81,27 @@ $(document).ready(function () {
     }
 
     function calculateTotalExpenses() {
-        $(".form-control").each(function (item, value) {
+        totalExpenses = 0;
+        $(".form-control-calculate").each(function (item, value) {
             totalExpenses += Number(value.value);
             expenseDetails[value.id] = Number(value.value);
         });
         var getyearandmonth = new Date();
+        expenseDetails["noofpersons"] = $("#noofpersons").val();
         expenseDetails["monthandyear"] = monthNames[getyearandmonth.getMonth()] + '-' + getyearandmonth.getFullYear();
         return totalExpenses;
     }
 
     function calculateIndividualExpenses() {
         noofPersons = Number($("#noofpersons").val());
-        singleExpenses = (totalExpenses / noofPersons).toFixed(2);
+        singleExpenses = Math.round((totalExpenses / noofPersons).toFixed(2));
         return singleExpenses;
     }
 
     function saveRecordstoDatabase() {
         $.ajax({
-            type: 'POST',
-            url: 'https://tranquil-lake-83247.herokuapp.com/insertRecords',
+            type: 'POST',           
+            url: 'http://'+ dbConnection +'/insertRecords',
             data: expenseDetails,
             success: function (response) {
                 if (response.code === 200) {
@@ -102,8 +115,8 @@ $(document).ready(function () {
     
     function getRecordsfromDatabase() {
         $.ajax({
-            type: 'GET',
-            url: 'https://tranquil-lake-83247.herokuapp.com/getRecords',
+            type: 'GET',            
+            url: 'http://'+dbConnection+'/getRecords',
             success: function (response) {
                 if (response.code === 200) {
                     buildExpenseHistory(response.data);
@@ -117,7 +130,7 @@ $(document).ready(function () {
     function getIndividualExpenseDetails(getMonth) {
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:3000/getindividualExpense/' + getMonth,
+            url: 'http://'+ dbConnection +'/getindividualExpense/' + getMonth,
             success: function (response) {
                 if (response.code === 200) {
                     buildIndividualExpenseHistory(response.data);
@@ -182,7 +195,7 @@ $(document).ready(function () {
         var expenseDetails = {};
         expenseDetails.name = $("#username").val();
         expenseDetails.commonexpense = Number($("#commonexpenseamount").val());
-        expenseDetails.amount = Number(singleExpenses - expenseDetails.commonexpense).toFixed(2);
+        expenseDetails.amount = Math.round(Number(singleExpenses - expenseDetails.commonexpense).toFixed(2));
         if (expenseDetails) {
             buildExpenseForm(expenseDetails);
         }

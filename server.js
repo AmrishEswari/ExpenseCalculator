@@ -16,8 +16,8 @@ app.use(cors());
 //var Product = require('./server/controllers/ProductController');
 //User.saveAdmin();
 //Product.saveProducts();
-//var URI = 'mongodb://localhost/ExpenseCalculator';
-var URI = 'mongodb://Amrish:Amrish@ds133597.mlab.com:33597/expensecalculator';
+var URI = 'mongodb://localhost/ExpenseCalculator';
+//var URI = 'mongodb://Amrish:Amrish@ds133597.mlab.com:33597/expensecalculator';
 
 var mongoose = require('mongoose');
 mongoose.connect(URI);
