@@ -88,7 +88,7 @@ $(document).ready(function () {
     function saveRecordstoDatabase() {
         $.ajax({
             type: 'POST',
-            url: 'http://tranquil-lake-83247.herokuapp.com/insertRecords',
+            url: 'https://tranquil-lake-83247.herokuapp.com/insertRecords',
             data: expenseDetails,
             success: function (response) {
                 if (response.code === 200) {
@@ -103,7 +103,7 @@ $(document).ready(function () {
     function getRecordsfromDatabase() {
         $.ajax({
             type: 'GET',
-            url: 'http://tranquil-lake-83247.herokuapp.com/getRecords',
+            url: 'https://tranquil-lake-83247.herokuapp.com/getRecords',
             success: function (response) {
                 if (response.code === 200) {
                     buildExpenseHistory(response.data);
