@@ -13,7 +13,7 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 var mongoLabURL ='tranquil-lake-83247.herokuapp.com';
 var mongodbURL = 'localhost:3000';
-var serverEnvironment = false;
+var serverEnvironment = true;
 var dbConnection = '';
 var userInformation = {};
 $(document).ready(function () {
@@ -254,7 +254,7 @@ $(document).ready(function () {
             data: userInformation,
             success: function (response) {
                 if (response.code === 200) {
-                    window.location.href = "http://localhost:3000/playGround";
+                    window.location.href = "http://"+ dbConnection +"/playGround";
                 }
             }
         })
