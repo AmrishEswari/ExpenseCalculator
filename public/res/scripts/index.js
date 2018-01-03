@@ -247,14 +247,14 @@ $(document).ready(function () {
     }
 
 
-    function ValidateUsers(userInformation) {
+    function ValidateUsers(userInformation) {        
         $.ajax({
             type: 'GET',
-            url: 'http://' + dbConnection + '/getUsers' + userInformation.password,
+            url: 'http://' + dbConnection + '/getUsers',
             data: userInformation,
             success: function (response) {
                 if (response.code === 200) {
-                    console.log(response);
+                    window.location.href = "http://localhost:3000/playGround";
                 }
             }
         })

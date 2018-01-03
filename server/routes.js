@@ -25,6 +25,6 @@ module.exports = function (app) {
     app.post('/insertRecords', RecordController.save);
     app.post('/insertindividualExpense', UserController.save);
     app.get('/getindividualExpense/:getMonth', UserController.list);
-    app.get('/getUsers/:password', LoginController.validateusers);
+    app.get('/getUsers', LoginController.validateusers);
     
 };

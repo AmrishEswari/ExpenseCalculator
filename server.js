@@ -12,7 +12,8 @@ var morgan = require('morgan');
 //var MongoClient = require('mongodb').MongoClient;
 app.use(cors());
 
-//var User = require('./server/controllers/UserController');
+var Login = require('./server/controllers/LoginController');
+Login.saveAdmin();
 //var Product = require('./server/controllers/ProductController');
 //User.saveAdmin();
 //Product.saveProducts();
